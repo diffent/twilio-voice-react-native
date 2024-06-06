@@ -55,6 +55,16 @@ public class VoiceApplicationProxy {
     instance = this;
     context = reactNativeHost.getAssociatedApplication();
   }
+  // easier to call from expo main application on droid which is in kotlin
+  public VoiceApplicationProxy(Application app) {
+    Log.d("expopatch", "vap constructor overload");
+    if (null != instance) {
+      logger.error("Voice application proxy already created!");
+    }
+    instance = this;
+    Log.d("expopatch", "got vap " + instance);
+    context = app;
+  }
   public void onCreate() {
     logger.debug("onCreate(..) invoked");
     // construct JS event engine
