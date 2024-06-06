@@ -4,6 +4,7 @@ import static com.twiliovoicereactnative.CallRecordDatabase.CallRecord;
 
 import java.util.List;
 import java.util.Objects;
+import android.util.Log;
 
 import android.app.Application;
 import android.content.ComponentName;
