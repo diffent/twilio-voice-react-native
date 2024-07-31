@@ -62,6 +62,8 @@
 
 #pragma mark - Utility
 
+// old way before privacy fix
+#if 0
 - (NSDictionary *)callMessageInfo:(TVOCallMessage *)callMessage {
     NSDictionary *callMessageInfoObject = @{
         kTwilioVoiceReactNativeVoiceEventSid: callMessage.voiceEventSid,
@@ -82,5 +84,17 @@
             return kTwilioVoiceReactNativeUserDefinedMessage;
     }
 }
+#else
+- (NSDictionary *)callMessageInfo:(TVOCallMessage *)callMessage {
+    NSDictionary *callMessageInfoObject = @{
+        kTwilioVoiceReactNativeVoiceEventSid: callMessage.voiceEventSid,
+        kTwilioVoiceReactNativeCallMessageContent: callMessage.content,
+        kTwilioVoiceReactNativeCallMessageContentType: callMessage.contentType,
+        kTwilioVoiceReactNativeCallMessageMessageType: callMessage.messageType
+    };
+    
+    return callMessageInfoObject;
+}
+#endif
 
 @end
