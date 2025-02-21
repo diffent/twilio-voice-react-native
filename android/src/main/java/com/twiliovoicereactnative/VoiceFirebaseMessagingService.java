@@ -23,6 +23,8 @@ import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingSerializer;
 import java.util.Objects;
 import java.util.UUID;
 
+import android.util.Log;
+
 public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
   private static final SDKLog logger = new SDKLog(VoiceFirebaseMessagingService.class);
 
