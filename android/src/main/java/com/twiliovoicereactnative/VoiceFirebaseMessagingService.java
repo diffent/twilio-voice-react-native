@@ -17,6 +17,9 @@ import com.twilio.voice.CancelledCallInvite;
 import com.twilio.voice.MessageListener;
 import com.twilio.voice.Voice;
 
+import io.invertase.firebase.common.ReactNativeFirebaseEventEmitter;
+import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingSerializer;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -51,6 +54,16 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
   @Override
   public void onNewToken(@NonNull String token) {
     logger.log("Refreshed FCM token: " + token);
+
+    ReactNativeFirebaseEventEmitter emitter = ReactNativeFirebaseEventEmitter.getSharedInstance();
+    if (emitter != null)
+      Log.d("bk", "RN fb event emitter got it");
+    else
+      Log.d("bk", "*** no event emitter");
+
+    if (emitter != null)
+      emitter.sendEvent(ReactNativeFirebaseMessagingSerializer.newTokenToTokenEvent(token));
+
   }
 
   /**
