@@ -158,12 +158,17 @@ class NotificationUtility {
       callRecord.getUuid());
     PendingIntent piRejectIntent = constructPendingIntentForService(context, rejectIntent);
 
+    var mainActClass = Objects.requireNonNull(VoiceApplicationProxy.getMainActivityClass());
+
+    // send the ACTION_ACCEPT_CALL to the voice service not the main app
+    // experimental patch to see if it fixes the Answer button bug in the incoming call alert popup
+    // initial local tests worked
     Intent acceptIntent = constructMessage(
       context,
       Constants.ACTION_ACCEPT_CALL,
-      Objects.requireNonNull(VoiceApplicationProxy.getMainActivityClass()),
-      callRecord.getUuid());
-    PendingIntent piAcceptIntent = constructPendingIntentForActivity(context, acceptIntent);
+      VoiceService.class, // Objects.requireNonNull(VoiceApplicationProxy.getMainActivityClass()),
+      callRecord.getUuid());       /* below:  was: ForActivity*/
+    PendingIntent piAcceptIntent = constructPendingIntentForService(context, acceptIntent);
 
     return constructNotificationBuilder(context, channelImportance)
       .setSmallIcon(notificationResource.getSmallIconId())
