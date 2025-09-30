@@ -170,15 +170,19 @@ class NotificationUtility {
       callRecord.getUuid());       /* below:  was: ForActivity*/
     PendingIntent piAcceptIntent = constructPendingIntentForService(context, acceptIntent);
 
+    // test orig way
+    //PendingIntent piAcceptIntent = constructPendingIntentForActivity(context, acceptIntent);
+
     return constructNotificationBuilder(context, channelImportance)
       .setSmallIcon(notificationResource.getSmallIconId())
+      .setPriority(NotificationCompat.PRIORITY_MAX) // trial Sept 30 2025
       .setCategory(Notification.CATEGORY_CALL)
       .setAutoCancel(true)
       .setContentIntent(piForegroundIntent)
       .setFullScreenIntent(piForegroundIntent, true)
       .addPerson(incomingCaller)
       .setStyle(NotificationCompat.CallStyle.forIncomingCall(
-        incomingCaller, piRejectIntent, piAcceptIntent))
+        incomingCaller, piRejectIntent, /*piAcceptIntent*/piForegroundIntent))
       .build();
   }
 
@@ -301,8 +305,8 @@ class NotificationUtility {
   private static int getChannelImportance(@NonNull final String voiceChannel) {
     final Map<String, Integer> importanceMapping = Map.of(
       Constants.VOICE_CHANNEL_HIGH_IMPORTANCE, NotificationManagerCompat.IMPORTANCE_HIGH,
-      Constants.VOICE_CHANNEL_DEFAULT_IMPORTANCE, NotificationManagerCompat.IMPORTANCE_DEFAULT,
-      Constants.VOICE_CHANNEL_LOW_IMPORTANCE, NotificationManagerCompat.IMPORTANCE_LOW);
+      Constants.VOICE_CHANNEL_DEFAULT_IMPORTANCE, NotificationManagerCompat.IMPORTANCE_HIGH, // mod
+      Constants.VOICE_CHANNEL_LOW_IMPORTANCE, NotificationManagerCompat.IMPORTANCE_HIGH); // mod
     return Objects.requireNonNull(importanceMapping.get(voiceChannel));
   }
 
