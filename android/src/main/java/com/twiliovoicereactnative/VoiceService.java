@@ -1,4 +1,5 @@
 package com.twiliovoicereactnative;
+import com.twilio.audioswitch.AudioDevice;
 
 
 import static com.twiliovoicereactnative.CommonConstants.CallInviteEventKeyCallSid;
@@ -193,6 +194,9 @@ public class VoiceService extends Service {
 
 
     // play ringer sound
+    // new line for quiet ring patch
+    VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().selectDevice(new AudioDevice.Speakerphone());
+
     VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().activate();
     VoiceApplicationProxy.getMediaPlayerManager().play(MediaPlayerManager.SoundTable.INCOMING);
 
@@ -215,6 +219,9 @@ public class VoiceService extends Service {
       // stop ringer sound
       VoiceApplicationProxy.getMediaPlayerManager().stop();
       VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().deactivate();
+
+      VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().selectDevice(new AudioDevice.Earpiece());
+
 
       // report an error to JS layer
       sendPermissionsError();
